@@ -13,4 +13,4 @@ __pycache__/
 .env
 
 # Configurações locais do VS Code
-.vscode/
+.vscode/*.deb

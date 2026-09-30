@@ -1,21 +1,37 @@
 from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
-from webdriver_manager.chrome import ChromeDriverManager
-
 import pytest
+import tempfile
 
 
 @pytest.fixture
 def driver():
-    options = Options()
-    options.add_argument("--headless=new")
-    options.add_argument("--no-sandbox")
-    options.add_argument("--disable-dev-shm-usage")
-    options.add_argument("--window-size=1920,1080")
-    options.add_argument("--headless=new")
 
-    service = Service(ChromeDriverManager().install())
-    driver = webdriver.Chrome(service=service, options=options)
+    chrome_options = Options()
+
+    # Perfil limpo e isolado
+    user_data_dir = tempfile.mkdtemp()
+    chrome_options.add_argument(f"--user-data-dir={user_data_dir}")
+
+    # Desativa Password Manager
+    prefs = {
+        "credentials_enable_service": False,
+        "profile.password_manager_enabled": False,
+        "profile.password_manager_leak_detection": False,
+    }
+
+    chrome_options.add_experimental_option("prefs", prefs)
+
+    chrome_options.add_argument("--disable-features=PasswordLeakDetection")
+    chrome_options.add_argument("--safebrowsing-disable-leak-detection")
+    chrome_options.add_argument("--disable-notifications")
+    chrome_options.add_argument("--disable-infobars")
+    chrome_options.add_argument("--disable-extensions")
+
+    driver = webdriver.Chrome(options=chrome_options)
+
+    driver.maximize_window()
+
     yield driver
+
     driver.quit()

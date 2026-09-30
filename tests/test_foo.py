@@ -2,6 +2,7 @@ from selenium import webdriver
 import time
 from selenium.webdriver.common.by import By
 
+
 def test_foo():
     # Inicializa o ChromeDriver automaticamente
     driver = webdriver.Firefox()

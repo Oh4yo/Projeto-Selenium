@@ -1,18 +1,14 @@
 from selenium.webdriver.common.by import By
+from .base_page import BasePage
 
 
-class LoginPage:
-    def __init__(self, driver):
-        self.driver = driver
+class LoginPage(BasePage):
 
-    def acessar(self):
-        self.driver.get("https://www.saucedemo.com/")
+    USERNAME = (By.ID, "user-name")
+    PASSWORD = (By.ID, "password")
+    LOGIN_BTN = (By.ID, "login-button")
 
-    def preencher_usuario(self, usuario):
-        self.driver.find_element(By.ID, "username").send_keys(usuario)
-
-    def preencher_senha(self, senha):
-        self.driver.find_element(By.ID, "password").send_keys(senha)
-
-    def clicar_login(self):
-        self.driver.find_element(By.ID, "login").click()
+    def login(self, user, password):
+        self.type(*self.USERNAME, user)
+        self.type(*self.PASSWORD, password)
+        self.click(*self.LOGIN_BTN)
