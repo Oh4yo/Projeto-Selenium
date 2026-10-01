@@ -7,9 +7,12 @@ class CheckoutPage(BasePage):
     FIRST_NAME = (By.ID, "first-name")
     LAST_NAME = (By.ID, "last-name")
     POSTAL_CODE = (By.ID, "postal-code")
+
     CONTINUE = (By.ID, "continue")
     FINISH = (By.ID, "finish")
+
     SUCCESS_MSG = (By.CLASS_NAME, "complete-header")
+    ERROR_MSG = (By.CSS_SELECTOR, "[data-test='error']")
 
     def fill_form(self, name, last, zip_code):
         self.type(*self.FIRST_NAME, name)
@@ -24,3 +27,6 @@ class CheckoutPage(BasePage):
 
     def get_success_message(self):
         return self.get_text(*self.SUCCESS_MSG)
+
+    def get_error_message(self):
+        return self.get_text(*self.ERROR_MSG)
